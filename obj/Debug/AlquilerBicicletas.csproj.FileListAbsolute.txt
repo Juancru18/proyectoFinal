@@ -1,0 +1,7 @@
+C:\Users\Windows\source\repos\AlquilerBicicletas\AlquilerBicicletas\bin\Debug\AlquilerBicicletas.exe.config
+C:\Users\Windows\source\repos\AlquilerBicicletas\AlquilerBicicletas\bin\Debug\AlquilerBicicletas.exe
+C:\Users\Windows\source\repos\AlquilerBicicletas\AlquilerBicicletas\bin\Debug\AlquilerBicicletas.pdb
+C:\Users\Windows\source\repos\AlquilerBicicletas\AlquilerBicicletas\obj\Debug\AlquilerBicicletas.csproj.AssemblyReference.cache
+C:\Users\Windows\source\repos\AlquilerBicicletas\AlquilerBicicletas\obj\Debug\AlquilerBicicletas.csproj.CoreCompileInputs.cache
+C:\Users\Windows\source\repos\AlquilerBicicletas\AlquilerBicicletas\obj\Debug\AlquilerBicicletas.exe
+C:\Users\Windows\source\repos\AlquilerBicicletas\AlquilerBicicletas\obj\Debug\AlquilerBicicletas.pdb
