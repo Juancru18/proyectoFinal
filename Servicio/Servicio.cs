@@ -25,24 +25,10 @@ namespace AlquilerBicicletas.Servicio
 
         public void RegistrarAlquiler(int idBici, string usuario, decimal precioPorHora)
         {
-            if (idBici <= 0)
-            {
-                throw new ArgumentException("El id de la bicicleta debe ser un número positivo.");
-            }
-
-            if (string.IsNullOrWhiteSpace(usuario))
-            {
-                throw new ArgumentException("El nombre del usuario no puede estar vacío.");
-            }
-
-            if (precioPorHora <= 0)
-            {
-                throw new ArgumentException("El precio por hora debe ser mayor a cero.");
-            }
 
             if (BuscarBicicleta(idBici) != null)
             {
-                throw new Exception("La bicicleta ya se encuentra alquilada.");
+                throw new InvalidOperationException("La bicicleta ya se encuentra alquilada.");
             }
 
             AlquilerBicicleta alquiler = new AlquilerBicicleta(idBici, usuario, precioPorHora);
@@ -87,16 +73,12 @@ namespace AlquilerBicicletas.Servicio
 
                 string[] datos = linea.Split(';');
 
-                // Se ignoran líneas corruptas (campos faltantes o con formato inválido)
-                // en lugar de interrumpir la lectura de todo el archivo.
                 if (datos.Length != 4)
                 {
                     continue;
                 }
 
-                if (!int.TryParse(datos[0], out int idBici) ||
-                    !decimal.TryParse(datos[3], out decimal precioPorHora) ||
-                    !DateTime.TryParse(datos[2], out DateTime horaInicio))
+                if (!int.TryParse(datos[0], out int idBici) || !decimal.TryParse(datos[3], out decimal precioPorHora) || !DateTime.TryParse(datos[2], out DateTime horaInicio))
                 {
                     continue;
                 }

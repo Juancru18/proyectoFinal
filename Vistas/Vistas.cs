@@ -16,8 +16,8 @@ namespace AlquilerBicicletas.Vistas
 
         public ServicioAlquiler servicio = new ServicioAlquiler();
 
-        // Helper reutilizable para leer un entero positivo desde consola,
-        // validando la entrada hasta que sea correcta.
+        // Metodos de Validacion
+
         private int LeerEnteroPositivo(string mensaje)
         {
             int valor;
@@ -32,7 +32,6 @@ namespace AlquilerBicicletas.Vistas
             return valor;
         }
 
-        // Helper reutilizable para leer un decimal positivo desde consola.
         private decimal LeerDecimalPositivo(string mensaje)
         {
             decimal valor;
@@ -47,7 +46,6 @@ namespace AlquilerBicicletas.Vistas
             return valor;
         }
 
-        // Helper reutilizable para leer un texto no vacío desde consola.
         private string LeerTextoNoVacio(string mensaje)
         {
             string valor;
@@ -63,6 +61,8 @@ namespace AlquilerBicicletas.Vistas
 
             return valor;
         }
+
+        // Metodo RetirarBicicleta()
 
         private void RetirarBicicleta()
         {
@@ -83,6 +83,8 @@ namespace AlquilerBicicletas.Vistas
                 Console.WriteLine(ex.Message);
             }
         }
+
+        // Metodo MostrarAlquileres()
 
         private void MostrarAlquileres()
         {
@@ -114,6 +116,8 @@ namespace AlquilerBicicletas.Vistas
             }
         }
 
+        // Metodo DevolverBicicleta()
+
         private void DevolverBicicleta()
         {
             Console.Clear();
@@ -138,6 +142,8 @@ namespace AlquilerBicicletas.Vistas
                 Console.WriteLine(ex.Message);
             }
         }
+
+        // Metodo Iniciar()
 
         public void Iniciar()
         {
