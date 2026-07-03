@@ -17,9 +17,24 @@ namespace AlquilerBicicletas.Modelos
         public decimal PrecioPorHora { get; set; }
 
         public AlquilerBicicleta(int idBici, string usuario, decimal precioPorHora)
-        { 
+        {
+            if (idBici <= 0)
+            {
+                throw new ArgumentException("El id de la bicicleta debe ser un número positivo.", nameof(idBici));
+            }
+
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                throw new ArgumentException("El usuario no puede estar vacío.", nameof(usuario));
+            }
+
+            if (precioPorHora <= 0)
+            {
+                throw new ArgumentException("El precio por hora debe ser mayor a cero.", nameof(precioPorHora));
+            }
+
             IdBici = idBici;
-            Usuario = usuario;
+            Usuario = usuario.Trim();
             HoraInicio = DateTime.Now;
             PrecioPorHora = precioPorHora;
         }

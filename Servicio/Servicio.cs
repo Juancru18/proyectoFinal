@@ -25,6 +25,20 @@ namespace AlquilerBicicletas.Servicio
 
         public void RegistrarAlquiler(int idBici, string usuario, decimal precioPorHora)
         {
+            if (idBici <= 0)
+            {
+                throw new ArgumentException("El id de la bicicleta debe ser un número positivo.");
+            }
+
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                throw new ArgumentException("El nombre del usuario no puede estar vacío.");
+            }
+
+            if (precioPorHora <= 0)
+            {
+                throw new ArgumentException("El precio por hora debe ser mayor a cero.");
+            }
 
             if (BuscarBicicleta(idBici) != null)
             {
@@ -38,14 +52,30 @@ namespace AlquilerBicicletas.Servicio
                            $"{alquiler.HoraInicio};" +
                            $"{alquiler.PrecioPorHora}";
 
-            File.AppendAllText(rutaArchivo, linea + Environment.NewLine);
+            try
+            {
+                File.AppendAllText(rutaArchivo, linea + Environment.NewLine);
+            }
+            catch (IOException ex)
+            {
+                throw new Exception("No se pudo guardar el alquiler. Verifique que el archivo no esté en uso.", ex);
+            }
         }
 
         public List<AlquilerBicicleta> ObtenerAlquileres()
         {
             List<AlquilerBicicleta> lista = new List<AlquilerBicicleta>();
 
-            string[] lineas = File.ReadAllLines(rutaArchivo);
+            string[] lineas;
+
+            try
+            {
+                lineas = File.ReadAllLines(rutaArchivo);
+            }
+            catch (IOException ex)
+            {
+                throw new Exception("No se pudo leer el archivo de alquileres. Verifique que no esté en uso.", ex);
+            }
 
             foreach (string linea in lineas)
             {
@@ -57,9 +87,31 @@ namespace AlquilerBicicletas.Servicio
 
                 string[] datos = linea.Split(';');
 
-                AlquilerBicicleta alquiler = new AlquilerBicicleta(int.Parse(datos[0]), datos[1], decimal.Parse(datos[3]));
+                // Se ignoran líneas corruptas (campos faltantes o con formato inválido)
+                // en lugar de interrumpir la lectura de todo el archivo.
+                if (datos.Length != 4)
+                {
+                    continue;
+                }
 
-                alquiler.HoraInicio = DateTime.Parse(datos[2]);
+                if (!int.TryParse(datos[0], out int idBici) ||
+                    !decimal.TryParse(datos[3], out decimal precioPorHora) ||
+                    !DateTime.TryParse(datos[2], out DateTime horaInicio))
+                {
+                    continue;
+                }
+
+                string usuario = datos[1];
+
+                if (idBici <= 0 || string.IsNullOrWhiteSpace(usuario) || precioPorHora <= 0)
+                {
+                    continue;
+                }
+
+                AlquilerBicicleta alquiler = new AlquilerBicicleta(idBici, usuario, precioPorHora)
+                {
+                    HoraInicio = horaInicio
+                };
 
                 lista.Add(alquiler);
             }
@@ -69,6 +121,11 @@ namespace AlquilerBicicletas.Servicio
 
         public AlquilerBicicleta BuscarBicicleta(int idBici)
         {
+            if (idBici <= 0)
+            {
+                return null;
+            }
+
             List<AlquilerBicicleta> alquileres = ObtenerAlquileres();
 
             foreach (AlquilerBicicleta alquiler in alquileres)
@@ -105,11 +162,23 @@ namespace AlquilerBicicletas.Servicio
                 lineas.Add(linea);
             }
 
-            File.WriteAllLines(rutaArchivo, lineas);
+            try
+            {
+                File.WriteAllLines(rutaArchivo, lineas);
+            }
+            catch (IOException ex)
+            {
+                throw new Exception("No se pudo actualizar el archivo de alquileres. Verifique que no esté en uso.", ex);
+            }
         }
 
         public decimal DevolverBicicleta(int idBici)
         {
+            if (idBici <= 0)
+            {
+                return -1;
+            }
+
             // Obtener todos los alquileres
             List<AlquilerBicicleta> alquileres = ObtenerAlquileres();
 

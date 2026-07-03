@@ -16,18 +16,61 @@ namespace AlquilerBicicletas.Vistas
 
         public ServicioAlquiler servicio = new ServicioAlquiler();
 
+        // Helper reutilizable para leer un entero positivo desde consola,
+        // validando la entrada hasta que sea correcta.
+        private int LeerEnteroPositivo(string mensaje)
+        {
+            int valor;
+
+            Console.Write(mensaje);
+
+            while (!int.TryParse(Console.ReadLine(), out valor) || valor <= 0)
+            {
+                Console.Write("Valor inválido. Ingrese un número entero positivo: ");
+            }
+
+            return valor;
+        }
+
+        // Helper reutilizable para leer un decimal positivo desde consola.
+        private decimal LeerDecimalPositivo(string mensaje)
+        {
+            decimal valor;
+
+            Console.Write(mensaje);
+
+            while (!decimal.TryParse(Console.ReadLine(), out valor) || valor <= 0)
+            {
+                Console.Write("Valor inválido. Ingrese un número mayor a cero: ");
+            }
+
+            return valor;
+        }
+
+        // Helper reutilizable para leer un texto no vacío desde consola.
+        private string LeerTextoNoVacio(string mensaje)
+        {
+            string valor;
+
+            Console.Write(mensaje);
+            valor = Console.ReadLine();
+
+            while (string.IsNullOrWhiteSpace(valor))
+            {
+                Console.Write("El valor no puede estar vacío. Intente nuevamente: ");
+                valor = Console.ReadLine();
+            }
+
+            return valor;
+        }
+
         private void RetirarBicicleta()
         {
             Console.Clear();
 
-            Console.Write("Id de la bicicleta: ");
-            int id = int.Parse(Console.ReadLine());
-
-            Console.Write("Nombre del usuario: ");
-            string usuario = Console.ReadLine();
-
-            Console.Write("Precio por hora: ");
-            decimal precio = decimal.Parse(Console.ReadLine());
+            int id = LeerEnteroPositivo("Id de la bicicleta: ");
+            string usuario = LeerTextoNoVacio("Nombre del usuario: ");
+            decimal precio = LeerDecimalPositivo("Precio por hora: ");
 
             try
             {
@@ -45,7 +88,17 @@ namespace AlquilerBicicletas.Vistas
         {
             Console.Clear();
 
-            List<AlquilerBicicleta> alquileres = servicio.ObtenerAlquileres();
+            List<AlquilerBicicleta> alquileres;
+
+            try
+            {
+                alquileres = servicio.ObtenerAlquileres();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
 
             if (alquileres.Count == 0)
             {
@@ -65,19 +118,25 @@ namespace AlquilerBicicletas.Vistas
         {
             Console.Clear();
 
-            Console.Write("Id de la bicicleta a devolver: ");
-            int id = int.Parse(Console.ReadLine());
+            int id = LeerEnteroPositivo("Id de la bicicleta a devolver: ");
 
-            decimal importe = servicio.DevolverBicicleta(id);
-
-            if (importe < 0)
+            try
             {
-                Console.WriteLine("No se encontró una bicicleta con ese Id alquilada.");
-                return;
-            }
+                decimal importe = servicio.DevolverBicicleta(id);
 
-            Console.WriteLine($"Importe a pagar: ${importe:F2}");
-            Console.WriteLine("Bicicleta devuelta correctamente.");
+                if (importe < 0)
+                {
+                    Console.WriteLine("No se encontró una bicicleta con ese Id alquilada.");
+                    return;
+                }
+
+                Console.WriteLine($"Importe a pagar: ${importe:F2}");
+                Console.WriteLine("Bicicleta devuelta correctamente.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public void Iniciar()
@@ -97,7 +156,13 @@ namespace AlquilerBicicletas.Vistas
                 Console.WriteLine("4 - Salir");
                 Console.Write("Seleccione una opción: ");
 
-                opcion = int.Parse(Console.ReadLine());
+                if (!int.TryParse(Console.ReadLine(), out opcion))
+                {
+                    Console.WriteLine("Opción inválida. Ingrese un número.");
+                    Console.WriteLine("\nPresione una tecla para continuar...");
+                    Console.ReadKey();
+                    continue;
+                }
 
                 switch (opcion)
                 {
