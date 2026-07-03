@@ -23,6 +23,8 @@ namespace AlquilerBicicletas.Servicio
             }
         }
 
+        // Metodo RegistrarAlquiler()
+
         public void RegistrarAlquiler(int idBici, string usuario, decimal precioPorHora)
         {
 
@@ -47,6 +49,8 @@ namespace AlquilerBicicletas.Servicio
                 throw new Exception("No se pudo guardar el alquiler. Verifique que el archivo no esté en uso.", ex);
             }
         }
+
+        // Metodo ObtenerAlquileres()
 
         public List<AlquilerBicicleta> ObtenerAlquileres()
         {
@@ -101,6 +105,8 @@ namespace AlquilerBicicletas.Servicio
             return lista;
         }
 
+        // Metodo BuscarBicicleta()
+
         public AlquilerBicicleta BuscarBicicleta(int idBici)
         {
             if (idBici <= 0)
@@ -121,6 +127,8 @@ namespace AlquilerBicicletas.Servicio
             return null;
         }
 
+        // Metodo CalcularImporte()
+
         public decimal CalcularImporte(AlquilerBicicleta alquiler)
         {
             double horas = Math.Max(1, Math.Ceiling((DateTime.Now - alquiler.HoraInicio).TotalHours));
@@ -129,6 +137,8 @@ namespace AlquilerBicicletas.Servicio
 
             return importe;
         }
+
+        // Metodo GuardarLista()
 
         private void GuardarLista(List<AlquilerBicicleta> alquileres)
         {
@@ -153,6 +163,8 @@ namespace AlquilerBicicletas.Servicio
                 throw new Exception("No se pudo actualizar el archivo de alquileres. Verifique que no esté en uso.", ex);
             }
         }
+
+        // Metodo DevolverBicicleta()
 
         public decimal DevolverBicicleta(int idBici)
         {
