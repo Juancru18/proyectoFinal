@@ -6,25 +6,26 @@ using System.Threading.Tasks;
 
 namespace AlquilerBicicletas.Modelos
 {
-    internal class AlquilerBicicletas
-    {
-        public int IdBici { get; set; }
-        public string Usuario { get; set; }
 
+    // Capa de Modelos
+
+    public class AlquilerBicicleta
+    {
+        public int IdBici { get;  set; }
+        public string Usuario { get; set; }
         public DateTime HoraInicio { get; set; }
         public decimal PrecioPorHora { get; set; }
 
-        public AlquilerBicicletas(int idBici, string usuario, decimal precioPorHora)
+        public AlquilerBicicleta(int idBici, string usuario, decimal precioPorHora)
         { 
-            IdBici = IdBici;
+            IdBici = idBici;
             Usuario = usuario;
             HoraInicio = DateTime.Now;
             PrecioPorHora = precioPorHora;
-             
         }
         public override string ToString()
         {
-            return $"Bici: {IdBici} | Usuario{Usuario} | Inicio: {HoraInicio} | Precio/Hora: {PrecioPorHora} ";
+            return $"Bici: {IdBici} | Usuario: {Usuario} | Inicio: {HoraInicio} | Precio/Hora: ${PrecioPorHora} ";
         }
     }
 }
